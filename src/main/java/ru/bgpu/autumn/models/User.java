@@ -3,6 +3,9 @@ package ru.bgpu.autumn.models;
 import jakarta.persistence.*;
 import ru.bgpu.autumn.dto.UserDTO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -13,6 +16,12 @@ public class User {
 
     private String name;
     private String login;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Message> messages;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Room> rooms = new ArrayList();
 
     public User() {
     }
@@ -48,5 +57,13 @@ public class User {
 
     public UserDTO toDto() {
         return new UserDTO(id, login, name);
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
     }
 }
