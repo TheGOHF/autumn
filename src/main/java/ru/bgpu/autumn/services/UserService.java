@@ -25,7 +25,7 @@ public class UserService {
         }
         return user.getGroups().stream()
                 .map(Group::getName)
-                .anyMatch(name -> name.equals(groupName));
+                .anyMatch(name -> name.equalsIgnoreCase(groupName));
     }
 
     public boolean isAdmin(User user) {
