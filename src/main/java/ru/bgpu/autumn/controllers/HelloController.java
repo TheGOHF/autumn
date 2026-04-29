@@ -17,6 +17,6 @@ public class HelloController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public HelloMessageDTO index(Authentication authentication) {
-        return new HelloMessageDTO(authentication.getName(), helloService.message(authentication.getName()));
+        return new HelloMessageDTO(authentication.getName(), helloService.message(authentication.getAuthorities().toString()));
     }
 }

@@ -24,7 +24,7 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Room> rooms = new ArrayList();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Group> groups = new ArrayList();
 
     public User() {
@@ -60,7 +60,9 @@ public class User {
     }
 
     public UserDTO toDto() {
-        return new UserDTO(id, name, login);
+        UserDTO dto =  new UserDTO(id, name, login);
+        dto.setGroups(groups.stream().map(Group::getName).toList());
+        return dto;
     }
 
     public List<Room> getRooms() {

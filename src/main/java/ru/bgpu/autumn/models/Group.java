@@ -1,6 +1,8 @@
 package ru.bgpu.autumn.models;
 
 import jakarta.persistence.*;
+import org.jspecify.annotations.Nullable;
+import org.springframework.security.core.GrantedAuthority;
 import ru.bgpu.autumn.util.AutumnDescription;
 
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "groups")
-public class Group {
+public class Group implements GrantedAuthority {
 
     @AutumnDescription("Администратор системы")
     public static final String GROUP_ADMIN = "ADMIN";
@@ -68,5 +70,15 @@ public class Group {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    @Override
+    public @Nullable String getAuthority() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

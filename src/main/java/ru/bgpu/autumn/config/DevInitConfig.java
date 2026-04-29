@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import ru.bgpu.autumn.models.Group;
 import ru.bgpu.autumn.models.Message;
 import ru.bgpu.autumn.models.Room;
 import ru.bgpu.autumn.models.User;
@@ -32,11 +33,14 @@ public class DevInitConfig implements CommandLineRunner {
 
         Random random = new Random();
 
+        Group userGroup = groupService.getByName(Group.GROUP_USER).orElseThrow();
+
         Room room = roomService.save(new Room("Общая комината"));
         for(int i = 0; i < 10; i++) {
             User user = new User("test-"+i,"login-"+i);
             user.setPassword(passwordEncoder.encode("password"));
             user.getRooms().add(room);
+            user.getGroups().add(userGroup);
             userService.save(user);
             for(int j = 0; j < 10; j++) {
                 if (random.nextInt() < 10 * i) {
