@@ -1,5 +1,6 @@
 package ru.bgpu.autumn.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class Question {
 
     @ManyToOne
     @JoinColumn(name = "vote_id")
+    @JsonIgnore
     private Vote vote;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
