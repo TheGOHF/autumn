@@ -1,27 +1,24 @@
 package ru.bgpu.autumn.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.bgpu.autumn.dto.UserDTO;
-import ru.bgpu.autumn.services.UserService;
+import ru.bgpu.autumn.models.User;
+import ru.bgpu.autumn.repositories.UserRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
+    private final UserRepository userRepository;
 
-    @Autowired UserService userService;
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @GetMapping
-    List<UserDTO> index() {
-        return userService
-                .listUsers()
-                .stream()
-                .map(u -> u.toDto())
-                .collect(Collectors.toList());
+    public List<User> index() {
+        return userRepository.findAll();
     }
 }

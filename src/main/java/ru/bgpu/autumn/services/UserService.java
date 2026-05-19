@@ -1,33 +1,30 @@
 package ru.bgpu.autumn.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.bgpu.autumn.models.User;
+import ru.bgpu.autumn.models.Group;
 import ru.bgpu.autumn.repositories.UserRepository;
 
-import java.sql.Array;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserService {
+    private final UserRepository userRepository;
 
-    @Autowired UserRepository userRepository;
-
-    public Optional<User> getByLogin(String login) {
-        return userRepository.getOneByLogin(login);
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public User save(User user) {
         return userRepository.save(user);
     }
 
-    public List<User> listUsers() {
-        List<User> list = new ArrayList<>();
-        for(User user: userRepository.findAll()) {
-            list.add(user);
-        }
-        return list;
+    public boolean isMemberOfGroup(User user, String groupName) {
+        if (user == null || user.getGroups() == null || groupName == null) return false;
+        return user.getGroups().stream().anyMatch(g -> g.getName().equals(groupName));
+    }
+
+    public Set<Group> getUserGroups(User user) {
+        return user != null ? user.getGroups() : Set.of();
     }
 }

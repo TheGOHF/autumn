@@ -1,14 +1,7 @@
 package ru.bgpu.autumn.repositories;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.bgpu.autumn.models.User;
 
-import java.util.Optional;
-
-@Repository
-public interface UserRepository extends CrudRepository<User, Long> {
-
-    Optional<User> getOneByLogin(String login);
-
+public interface UserRepository extends JpaRepository<User, Long> {
 }
