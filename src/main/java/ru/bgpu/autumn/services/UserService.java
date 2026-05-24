@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.bgpu.autumn.models.User;
 import ru.bgpu.autumn.repositories.UserRepository;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,4 +29,13 @@ public class UserService {
         }
         return list;
     }
+
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
 }
+
