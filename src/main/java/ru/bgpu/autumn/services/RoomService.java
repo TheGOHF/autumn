@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.bgpu.autumn.models.Room;
 import ru.bgpu.autumn.repositories.RoomRepository;
 
+import java.util.Optional;
+
 @Service
 public class RoomService {
 
@@ -12,5 +14,9 @@ public class RoomService {
 
     public Room save(Room room) {
         return roomRepository.save(room);
+    }
+
+    public Optional<Room> findById(Long id) {
+        return roomRepository.findById(id);
     }
 }

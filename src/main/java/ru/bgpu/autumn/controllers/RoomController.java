@@ -1,9 +1,71 @@
 package ru.bgpu.autumn.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+import ru.bgpu.autumn.dto.MessageDTO;
+import ru.bgpu.autumn.dto.RoomDTO;
+import ru.bgpu.autumn.models.Message;
+import ru.bgpu.autumn.models.Room;
+import ru.bgpu.autumn.models.User;
+import ru.bgpu.autumn.services.MessageService;
+import ru.bgpu.autumn.services.RoomService;
+import ru.bgpu.autumn.services.UserService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+@RestController
 @RequestMapping("/rooms")
 public class RoomController {
 
+    @Autowired private RoomService roomService;
+    @Autowired private MessageService messageService;
+    @Autowired private UserService userService;
 
+    @GetMapping("/my")
+    List<RoomDTO> myRooms(Authentication authentication) {
+        return userService
+                .getByLogin(authentication.getName())
+                .map(user -> user.getRooms().stream()
+                        .map(r -> new RoomDTO(r.getId(), r.getName()))
+                        .collect(Collectors.toList()))
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    @GetMapping("/{id}/messages")
+    List<MessageDTO> messages(@PathVariable Long id) {
+        return messageService.findByRoomId(id)
+                .stream()
+                .map(m -> new MessageDTO(
+                        m.getId(),
+                        m.getText(),
+                        m.getUser().getName(),
+                        m.getRoom().getId(),
+                        m.getTimestamp()))
+                .collect(Collectors.toList());
+    }
+
+    @PostMapping("/{id}/messages")
+    MessageDTO createMessage(
+            Authentication authentication,
+            @PathVariable Long id,
+            @RequestBody MessageDTO dto) {
+
+        Room room = roomService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Room not found"));
+        User user = userService.getByLogin(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Message message = new Message(user, dto.getText());
+        message.setRoom(room);
+        message = messageService.save(message);
+
+        return new MessageDTO(
+                message.getId(),
+                message.getText(),
+                message.getUser().getName(),
+                message.getRoom().getId(),
+                message.getTimestamp());
+    }
 }
