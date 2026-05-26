@@ -1,19 +1,11 @@
 package ru.bgpu.autumn.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-
 import java.util.Set;
 import java.util.HashSet;
 
 @Entity
 @Table(name = "questions")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,9 +18,21 @@ public class Question {
 
     @ManyToOne
     @JoinColumn(name = "vote_id")
-    @JsonIgnore
     private Vote vote;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<AnswerOption> answerOptions = new HashSet<>();
+
+    public Question() {}
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getText() { return text; }
+    public void setText(String text) { this.text = text; }
+    public Boolean getAllowMultiple() { return allowMultiple; }
+    public void setAllowMultiple(Boolean allowMultiple) { this.allowMultiple = allowMultiple; }
+    public Vote getVote() { return vote; }
+    public void setVote(Vote vote) { this.vote = vote; }
+    public Set<AnswerOption> getAnswerOptions() { return answerOptions; }
+    public void setAnswerOptions(Set<AnswerOption> answerOptions) { this.answerOptions = answerOptions; }
 }

@@ -1,6 +1,8 @@
 package ru.bgpu.autumn.controllers;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.bgpu.autumn.models.User;
 import ru.bgpu.autumn.repositories.UserRepository;
 
@@ -16,7 +18,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAll() {
+    public List<User> index() {
         return userRepository.findAll();
     }
 }

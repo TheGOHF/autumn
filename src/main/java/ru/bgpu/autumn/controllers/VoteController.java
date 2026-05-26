@@ -1,6 +1,8 @@
 package ru.bgpu.autumn.controllers;
 
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import ru.bgpu.autumn.models.Vote;
 import ru.bgpu.autumn.repositories.VoteRepository;
 
@@ -16,7 +18,7 @@ public class VoteController {
     }
 
     @GetMapping
-    public List<Vote> getAll() {
+    public List<Vote> index() {
         return voteRepository.findAll();
     }
 }

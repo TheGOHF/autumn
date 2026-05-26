@@ -1,16 +1,9 @@
 package ru.bgpu.autumn.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "answer_options")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class AnswerOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +13,18 @@ public class AnswerOption {
 
     @ManyToOne
     @JoinColumn(name = "question_id")
-    @JsonIgnore
     private Question question;
+
+    public AnswerOption() {}
+
+    public AnswerOption(String text) {
+        this.text = text;
+    }
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getText() { return text; }
+    public void setText(String text) { this.text = text; }
+    public Question getQuestion() { return question; }
+    public void setQuestion(Question question) { this.question = question; }
 }
